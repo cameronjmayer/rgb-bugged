@@ -32,7 +32,7 @@ function init(){
 		scoreDisplay.textContent = score;
 	}
 	else {
-		sessionStorage.setItem('score', score); 
+		sessionStorage.setItem('score', +score); 
 	}
 	reset();
 }
@@ -78,7 +78,7 @@ function setupSquares(){
 					messageDisplay.textContent = "Try Again"
 					score--;
 					scoreDisplay.textContent = score; 
-					sessionStorage.setItem('score', score);
+					sessionStorage.setItem('score', +score);
 					//decrement win counter
 					winCount--;
 				}
