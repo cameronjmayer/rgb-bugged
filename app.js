@@ -12,6 +12,7 @@ var score = 0; //initialize score to zero
 var scoreDisplay = document.querySelector("#scoreDisplay"); 
 var resetPressed = true; 
 
+
 /* call initialization function */ 
 init();
 
@@ -25,13 +26,13 @@ Initialize the beginning setup of the game
 function init(){
 	setupModeButtons();
 	setupSquares();
-	var lsScore = localStorage.getItem('score');
+	var lsScore = Number (localStorage.getItem('score'));
 	if( lsScore !== null ){
 		score = lsScore; 
 		scoreDisplay.textContent = score;
 	}
 	else {
-		localStorage.setItem('score', score); 
+		sessionStorage.setItem('score', score); 
 	}
 	reset();
 }
@@ -58,24 +59,29 @@ function setupSquares(){
 			//grab color of clicked square
 			var clickedColor = this.style.background;
 			//compare color to pickedColor
-			if(clickedColor = pickedColor){ 
+			if(clickedColor === pickedColor){ 
 				updateColorName();
 				messageDisplay.textContent = "Correct!";
 				resetButton.textContent = "Play Again?"
 				changeColors(clickedColor);
 				h1.style.background = clickedColor;
 				if(resetPressed){
-					score+=5; 
+					score+= winCount; 
 					resetPressed = false;
 				}
 				scoreDisplay.textContent = score;
-				localStorage.setItem('score', score);
+				sessionStorage.setItem('score', score);
 			} else {
-				this.style.background = "#232323";
-				messageDisplay.textContent = "Try Again"
-				score--;
-				scoreDisplay.textContent = score; 
-				localStorage.setItem('score', score);
+				if (this.getAttribute('data-clicked') === 'false'){
+					this.setAttribute('data-clicked','true');
+					this.style.display = "none";
+					messageDisplay.textContent = "Try Again"
+					score--;
+					scoreDisplay.textContent = score; 
+					sessionStorage.setItem('score', score);
+					//decrement win counter
+					winCount--;
+				}
 			}
 		} );
 	}
@@ -120,8 +126,12 @@ function reset(){
 		} else {
 			squares[i].style.display = "none";
 		}
+		//reset clicked-color to false
+		squares[i].setAttribute('data-clicked','false');
 	}
 	h1.style.background = "steelblue";
+	//reset counter
+	winCount = 5;
 }
 
 /* when you click the reset button reset */ 

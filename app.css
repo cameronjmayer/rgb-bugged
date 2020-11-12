@@ -12,6 +12,7 @@ body {
 .square {
 	width: 30%;
 	background: purple;
+	display: block;
 	padding-bottom: 30%;
 	float: left;
 	margin: 1.66%;
